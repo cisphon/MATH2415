@@ -58,11 +58,65 @@ def q4():
     elif np.dot(u, v) == np.linalg.norm(u) * np.linalg.norm(v):
         print('u and v are parallel')
     else:
-        print('u and v are not orthogonal or parallel')
+        print('neither')
 
 
 
+# The vertices of a triangle are given. Determine whether the triangle is an acute triangle, an obtuse triangle, or a right triangle.
 def q5():
+    a = np.array([-9, 0, 0])
+    b = np.array([0, 0, 0])
+    c = np.array([7, 2, 6])
+
+    u = a - b
+    v = a - c
+    w = b - c
+
+    mag_u = np.linalg.norm(u)
+    mag_v = np.linalg.norm(v)
+    mag_w = np.linalg.norm(w)
+
+
+    # the angle between u and v is
+    angle_u_v = np.degrees(np.arccos(np.dot(u, v) / (mag_u * mag_v)))
+
+    # the angle between v and w is
+    angle_v_w = np.degrees(np.arccos(np.dot(v, w) / (mag_v * mag_w)))
+
+    # the angle between u and w is
+    last_angle = 180 - angle_u_v - angle_v_w
+
+    # check if the triangle is a right triangle
+    if angle_u_v == 90 or angle_v_w == 90 or last_angle == 90:
+        print('right triangle')
+    # check if the triangle is an acute triangle
+    elif angle_u_v < 90 and angle_v_w < 90 and last_angle < 90:
+        print('acute triangle')
+    # check if the triangle is an obtuse triangle
+    elif angle_u_v > 90 or angle_v_w > 90 or last_angle > 90:
+        print('obtuse triangle')
+
+# Find the direction cosines and angles of u and show that cos2 𝛼 + cos2 𝛽 + cos2 𝛾 = 1.
+# (Round your answers for the angles to four decimal places.)
+def q6():
+    u = [1, 4, 8]
+
+    u_mag = np.linalg.norm(u)
+
+    cos_a = u[0] / u_mag
+    print('cos_a = ', round(cos_a, 4))
+    cos_b = u[1] / u_mag
+    print('cos_b = ', round(cos_b, 4))
+    cos_y = u[2] / u_mag
+    print('cos_y = ', round(cos_y, 4))
+
+    a = np.arccos(cos_a)
+    print('a = ', round(a, 4))
+    b = np.arccos(cos_b)
+    print('b = ', round(b, 4))
+    y = np.arccos(cos_y)
+    print('y = ', round(y, 4))
+
 
 
 # Consider the following.
@@ -115,4 +169,4 @@ def q10():
     print(round(force * distance * np.cos(angle * np.pi / 180), 1))
 
 if __name__ == "__main__":
-    q3()
+    q6()
