@@ -42,11 +42,36 @@ def q3():
     # u.v = |u| |v| cos(theta)
     mag_u = 25
     mag_v = 50
-    theta = np.pi * 5.0 / 6.0
+    theta = sy.pi * 5.0 / 6.0 # just for reference, too lazy to make this program better.
 
-    # print(mag_u * mag_v, ' ', np.cos(angle))
+    print(mag_u * mag_v, ' cos(', sy.pi, ' * 5 / 6) = ')
 
+# Determine whether u and v are orthogonal, parallel, or neither.
+def q4():
+    u = [0, 1, 9]
+    v = [1, -5, -1]
+
+    # check if u and v are orthogonal
+    if np.dot(u, v) == 0:
+        print('u and v are orthogonal')
+    # check if u and v are parallel
+    elif np.dot(u, v) == np.linalg.norm(u) * np.linalg.norm(v):
+        print('u and v are parallel')
+    else:
+        print('u and v are not orthogonal or parallel')
+
+
+
+def q5():
+
+
+# Consider the following.
 def q7():
+    u = np.array([2, 3])
+    v = np.array([7, 5])
+
+    # projection of u onto v
+    print(np.dot(u, v) / np.linalg.norm(v))
 
 
 # Find two vectors in opposite directions that are orthogonal to the vector u. (The answers are not unique. Enter your answer as a comma-separated list of vectors.)
@@ -90,4 +115,4 @@ def q10():
     print(round(force * distance * np.cos(angle * np.pi / 180), 1))
 
 if __name__ == "__main__":
-    q8()
+    q3()
