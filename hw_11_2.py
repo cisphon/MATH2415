@@ -1,6 +1,7 @@
 import numpy as np
 import sympy as sy
 from scipy.linalg import qr
+from fractions import Fraction
 
 # dot product of two vectors
 
@@ -21,10 +22,8 @@ def q1():
     # (u dot v) dot v
     print(np.dot(np.dot(u, v), v))
 
-
     # u dot (3 times v)
     print(np.dot(u, np.dot(3, v)))
-    
 
 # Find the angle theta between the vectors in radians and in degress.
 def q2():
@@ -104,11 +103,12 @@ def q6():
     u_mag = np.linalg.norm(u)
 
     cos_a = u[0] / u_mag
-    print('cos_a = ', round(cos_a, 4))
+    print(u[0], ' / ', u_mag, ' = ', round(cos_a, 4))
     cos_b = u[1] / u_mag
-    print('cos_b = ', round(cos_b, 4))
+    print(u[1], ' / ', u_mag, ' = ', round(cos_b, 4))
     cos_y = u[2] / u_mag
-    print('cos_y = ', round(cos_y, 4))
+    print(u[2], ' / ', u_mag, ' = ', round(cos_y, 4))
+
 
     a = np.arccos(cos_a)
     print('a = ', round(a, 4))
@@ -120,13 +120,26 @@ def q6():
 
 
 # Consider the following.
+# BE SURE TO PUT A VECTOR INSTEAD OF I + J
 def q7():
-    u = np.array([2, 3])
-    v = np.array([7, 5])
+    u = np.array([5, 2])
+    v = np.array([8, 6])
 
-    # projection of u onto v
-    print(np.dot(u, v) / np.linalg.norm(v))
+    numerator = np.dot(np.dot(u, v), v)
+    denominator = np.linalg.norm(v) ** 2
 
+
+    proj_u_on_v = []
+    print('Projection of u onto v: ')
+    for i in numerator:
+        fraction = Fraction((i / denominator)).limit_denominator()
+        proj_u_on_v.append(fraction)
+        print(fraction)
+
+    print('u orthogonal to v: ')
+    for i in range(len(u)):
+        fraction = Fraction((u[i] - proj_u_on_v[i])).limit_denominator()
+        print(fraction)
 
 # Find two vectors in opposite directions that are orthogonal to the vector u. (The answers are not unique. Enter your answer as a comma-separated list of vectors.)
 def q8():
@@ -168,5 +181,45 @@ def q10():
     # work done in towing the car 6 kilometers
     print(round(force * distance * np.cos(angle * np.pi / 180), 1))
 
+
+# this is a shit show because i don't know how it works. Best to move on.
+# https://www.chegg.com/homework-help/questions-and-answers/consider-following-yn-x2-y2-x1-3-find-points-intersection-graphs-two-equations-point-x-y-s-q39598719
+def q11():
+    x = sy.Symbol('x') # x is a symbol
+
+    y1 = x**2
+    y2 = x**(1/3)
+
+    # figure out x for which y1 = y2
+    solutions = sy.solve(y1 - y2)
+    A = solutions[0]
+    print(A, ', ', A)
+    B = solutions[1]
+    print(B, ', ', B)
+
+    y1_diff = y1.diff(x)
+    y2_diff = y1.diff(x)
+
+
+    print('y1 = ', y1_diff.subs(x, A))
+    print('y2 = ', y2_diff.subs(x, A))
+
+
+def test():
+    print(Fraction(1, 2))
+
 if __name__ == "__main__":
-    q6()
+
+    # q1()
+    # q2()
+    # q3()
+    # q4()
+    # q5()
+    # q6()
+    # q7()
+    # q8()
+    # q9()
+    # q10()
+    q11()
+
+    # test()

@@ -66,11 +66,26 @@ def q4():
     # get the center
     center = (-3, 0, 0)
 
-    # get the radius
-    radius = (1/2)**0.5
+    radius = ((center[0]**2 + center[1]**2 + center[2]**2)**0.5)
 
-    # print the equation
-    print("The equation of the sphere with the given characteristics is:", center, radius)
+    print('(x -', center[0], ')^2 + (y -', center[1], ')^2 + (z -', center[2], ')^2 =', radius**2)
+
+# Find a unit vector in the direction of v and in the direction opposite of v.
+def q11():
+    v = [-7, 4, 8]
+
+    # (a) in the direction of v
+
+
+    
+
+def test():
+    pass
 
 if __name__ == "__main__":
-    q4()
+
+    # q1()
+    # q2()
+    # q3()
+    # q4()
+
