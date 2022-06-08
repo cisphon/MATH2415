@@ -1,225 +1,197 @@
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
-import sympy as sy
-from scipy.linalg import qr
-from fractions import Fraction
 
-# dot product of two vectors
-
-
+# Plot the points on the same three-dimensional coordinate system.
+# (a) (4, 3, 1)
+# (b) (-1, 5, 2)
 def q1():
-    u = [4, -2, 5]
-    v = [0, 7, 5]
+    # get the points
+    p1 = (4, 3, 1)
+    p2 = (-1, 5, 2)
 
-    # u dot v
-    print(np.dot(u, v))
+    # 5 inches by 5 inches
+    fig = plt.figure()
+    fig.set_figheight(5)
+    fig.set_figwidth(5)
+    
+    # make it 3d
+    ax = fig.add_subplot(111, projection='3d')
 
-    # u dot u
-    print(np.dot(u, u))
+    # plot the points
+    ax.scatter(p1[0], p1[1], p1[2], c='r', marker='o')
+    ax.scatter(p2[0], p2[1], p2[2], c='b', marker='o')
 
-    # magnitude of v squared
-    print(np.linalg.norm(v) ** 2)
+    # set the labels
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
 
-    # (u dot v) dot v
-    print(np.dot(np.dot(u, v), v))
+    # set the limits of the axes
+    ax.axes.set_xlim3d(-10, 10)
+    ax.axes.set_ylim3d(-10, 10)
+    ax.axes.set_zlim3d(0, 10)
 
-    # u dot (3 times v)
-    print(np.dot(u, np.dot(3, v)))
+    # rotate the plot
+    ax.view_init(45, 45)
 
-# Find the angle theta between the vectors in radians and in degress.
+    # show the plot
+    plt.show()
+
+
+# Find the distance d between the points (-2, 2, 2) and (-6, 3, -6).
 def q2():
-    u = [6, 3, 1]
-    v = [3, -6, 0]
+    p1 = (-2, 2, 2)
+    p2 = (-6, 3, -6)
 
-    # theta in radians
-    print(np.arccos(np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))))
+    # get the distance between the two points
+    dist = ((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2 + (p1[2] - p2[2])**2)**0.5
 
-    # theta in degrees
-    print(np.arccos(np.dot(u, v) / (np.linalg.norm(u) * np.linalg.norm(v))) * (180 / np.pi))
+    # print the distance
+    print("The distance between the two points is:", dist)
 
-# use the alternative form of the dot product to find u.v
+# Find the corrdinates of the midpoint of the line segment joining the points (6, 0, -5) and (8, 4, 23).
 def q3():
-    # u.v = |u| |v| cos(theta)
-    mag_u = 25
-    mag_v = 50
-    theta = sy.pi * 5.0 / 6.0 # just for reference, too lazy to make this program better.
+    p1 = (6, 0, -5)
+    p2 = (8, 4, 23)
 
-    print(mag_u * mag_v, ' cos(', sy.pi, ' * 5 / 6) = ')
+    # get the midpoint
+    midpoint = ((p1[0] + p2[0])/2, (p1[1] + p2[1])/2, (p1[2] + p2[2])/2)
 
-# Determine whether u and v are orthogonal, parallel, or neither.
+    # print the midpoint
+    print("The midpoint of the line segment joining the points is:", midpoint)
+
+# Find the standard equation of the sphere with the given characteriststics.
+# Center: (-3, 0, 0), tangent to the yz-plane
 def q4():
-    u = [0, 1, 9]
-    v = [1, -5, -1]
+    # get the center
+    center = (-3, 0, 0)
 
-    # check if u and v are orthogonal
-    if np.dot(u, v) == 0:
-        print('u and v are orthogonal')
-    # check if u and v are parallel
-    elif np.dot(u, v) == np.linalg.norm(u) * np.linalg.norm(v):
-        print('u and v are parallel')
-    else:
-        print('neither')
+    radius = ((center[0]**2 + center[1]**2 + center[2]**2)**0.5)
 
-
-
-# The vertices of a triangle are given. Determine whether the triangle is an acute triangle, an obtuse triangle, or a right triangle.
-def q5():
-    a = np.array([-9, 0, 0])
-    b = np.array([0, 0, 0])
-    c = np.array([7, 2, 6])
-
-    u = a - b
-    v = a - c
-    w = b - c
-
-    mag_u = np.linalg.norm(u)
-    mag_v = np.linalg.norm(v)
-    mag_w = np.linalg.norm(w)
-
-
-    # the angle between u and v is
-    angle_u_v = np.degrees(np.arccos(np.dot(u, v) / (mag_u * mag_v)))
-
-    # the angle between v and w is
-    angle_v_w = np.degrees(np.arccos(np.dot(v, w) / (mag_v * mag_w)))
-
-    # the angle between u and w is
-    last_angle = 180 - angle_u_v - angle_v_w
-
-    # check if the triangle is a right triangle
-    if angle_u_v == 90 or angle_v_w == 90 or last_angle == 90:
-        print('right triangle')
-    # check if the triangle is an acute triangle
-    elif angle_u_v < 90 and angle_v_w < 90 and last_angle < 90:
-        print('acute triangle')
-    # check if the triangle is an obtuse triangle
-    elif angle_u_v > 90 or angle_v_w > 90 or last_angle > 90:
-        print('obtuse triangle')
-
-# Find the direction cosines and angles of u and show that cos2 𝛼 + cos2 𝛽 + cos2 𝛾 = 1.
-# (Round your answers for the angles to four decimal places.)
-def q6():
-    u = [1, 4, 8]
-
-    u_mag = np.linalg.norm(u)
-
-    cos_a = u[0] / u_mag
-    print(u[0], ' / ', u_mag, ' = ', round(cos_a, 4))
-    cos_b = u[1] / u_mag
-    print(u[1], ' / ', u_mag, ' = ', round(cos_b, 4))
-    cos_y = u[2] / u_mag
-    print(u[2], ' / ', u_mag, ' = ', round(cos_y, 4))
-
-
-    a = np.arccos(cos_a)
-    print('a = ', round(a, 4))
-    b = np.arccos(cos_b)
-    print('b = ', round(b, 4))
-    y = np.arccos(cos_y)
-    print('y = ', round(y, 4))
-
-
+    print('(x -', center[0], ')^2 + (y -', center[1], ')^2 + (z -', center[2], ')^2 =', radius**2)
 
 # Consider the following.
-# BE SURE TO PUT A VECTOR INSTEAD OF I + J
+def q5():
+    start = (4, 2, 1)
+    end = (2, 4, 3)
+
+    # get the vector between the two points
+    vector = (end[0] - start[0], end[1] - start[1], end[2] - start[2])
+
+    print(vector)
+
+    print('standard vector notation needs to use the vector symbols for i, j, and k instead of regular i, j, and k')
+
+# The initial and terminal points of a vector v are given.
+def q6():
+
+    start = (-1, 4, 5)
+    end = (5, 5, 6)
+
+    # get the vector between the two points
+    vector = (end[0] - start[0], end[1] - start[1], end[2] - start[2])
+
+    print(vector)
+
 def q7():
-    u = np.array([5, 2])
-    v = np.array([8, 6])
+    start = (2, 8, 0)
+    end = (4, 1, 8)
 
-    numerator = np.dot(np.dot(u, v), v)
-    denominator = np.linalg.norm(v) ** 2
+    # get the vector between the two points
+    vector = (end[0] - start[0], end[1] - start[1], end[2] - start[2])
 
+    print(vector)
 
-    proj_u_on_v = []
-    print('Projection of u onto v: ')
-    for i in numerator:
-        fraction = Fraction((i / denominator)).limit_denominator()
-        proj_u_on_v.append(fraction)
-        print(fraction)
+    # get the magnitude of the vector
+    print('sqrt(', vector[0]**2 + vector[1]**2 + vector[2]**2, ')')
 
-    print('u orthogonal to v: ')
-    for i in range(len(u)):
-        fraction = Fraction((u[i] - proj_u_on_v[i])).limit_denominator()
-        print(fraction)
+    # for the last one, just put the magnitude under the vector.
 
-# Find two vectors in opposite directions that are orthogonal to the vector u. (The answers are not unique. Enter your answer as a comma-separated list of vectors.)
 def q8():
-    u = [5, -3, 6]
+    u = [1, 2, 3]
+    v = [2, 2, -1]
+    w = [4, 0, -4]
 
-    # find vectors in opposite directions that are orthogonal to the vector u
-    vectors = []
-    for i in range(-10, 10):
-        for j in range(-10, 10):
-            for k in range(-10, 10):
-                if np.dot(u, [i, j, k]) == 0:
-                    vectors.append([i, j, k])
+    # 9u - 3v - 1/2w
 
-    # check if the vectors are going in opposite directions
-    for v in vectors:
-        for w in vectors:
-            if v[0] == -w[0] and v[1] == -w[1] and v[2] == -w[2]:
-                print(v, w)
-    # JUST PICK THE ONE BELOW [0, 0, 0] [0, 0, 0].
+    print(np.dot(u, 9) - np.dot(v, 3) - np.dot(w, 0.5))
 
-# A 39,000-pound truck is parked on a 10° slope (see figure). Assume the only force to overcome is that due to gravity. Find the force required to keep the truck from rolling down the hill and the force perpendicular to the hill. (Round your answers to one decimal place.)
-def q9():
-    truck = 39000
-    slope = 10 # in degrees
-
-    # (a) Find the force required to keep the truck from rolling down the hill.
-    print(round(truck * np.sin(slope * np.pi / 180), 1))
-
-    # (b) Find the force perpendicular to the hill.
-    print(round(truck * np.cos(slope * np.pi / 180), 1))
-
-
-# A car is towed using a force of 1600 newtons. The chain used to pull the car makes a 27° angle with the horizontal. Find the work done in towing the car 6 kilometers. (Round your answer to one decimal place.)
-def q10():
-    force = 1600
-    distance = 6
-    angle = 27
     
-    # work done in towing the car 6 kilometers
-    print(round(force * distance * np.cos(angle * np.pi / 180), 1))
+# Determine which of the vectors is (are) parallel to z. Use a graphing utility to confirm your results. (Select all that apply.)
+def q9():
+    z = [5, 4, -7]
+
+    a = [-10, -8, 14]
+    b = [2, 8/5, -14/5]
+    c = [10, 8, 14]
+    d = [1, -8, 4]
+
+    print('Just check which numbers are all the same (they\'ll be parallel).')
+    print(z[0]/a[0], ' ', z[1]/a[1], ' ', z[2]/a[2])
+    print(z[0]/b[0], ' ', z[1]/b[1], ' ', z[2]/b[2])
+    print(z[0]/c[0], ' ', z[1]/c[1], ' ', z[2]/c[2])
+    print(z[0]/d[0], ' ', z[1]/d[1], ' ', z[2]/d[2])
 
 
-# this is a shit show because i don't know how it works. Best to move on.
-# https://www.chegg.com/homework-help/questions-and-answers/consider-following-yn-x2-y2-x1-3-find-points-intersection-graphs-two-equations-point-x-y-s-q39598719
+# Use vectors to determine whether the points are collinear.
+def q10():
+    P = (0, -2, -5)
+    Q = (10, 13, 15)
+    R = (4, 4, 3)
+
+    # get the vectors
+    PQ = (Q[0] - P[0], Q[1] - P[1], Q[2] - P[2])
+    PR = (R[0] - P[0], R[1] - P[1], R[2] - P[2])
+ 
+        
+    if ((PQ[0] / PR[0]) == (PQ[1] / PR[1]) == (PQ[2] / PR[2])):
+        print("The vectors are parallel (therefore the points are collinear).")
+
+
+# Find a unit vector in the direction of v and in the direction opposite of v.
 def q11():
-    x = sy.Symbol('x') # x is a symbol
+    v = [1, -9, -8]
 
-    y1 = x**2
-    y2 = x**(1/3)
+    # (a) in the direction of v
+    # v / ||v||
+    print('sqrt(', v[0] ** 2 + v[1] ** 2 + v[2] ** 2, ')')
 
-    # figure out x for which y1 = y2
-    solutions = sy.solve(y1 - y2)
-    A = solutions[0]
-    print(A, ', ', A)
-    B = solutions[1]
-    print(B, ', ', B)
+    print(v)
 
-    y1_diff = y1.diff(x)
-    y2_diff = y1.diff(x)
+    # (b) in the direction opposite of v
+    # -v / ||v||
 
+    
+    # multiply each element by -1
+    v_opp = [-v[0], -v[1], -v[2]]
 
-    print('y1 = ', y1_diff.subs(x, A))
-    print('y2 = ', y2_diff.subs(x, A))
+    print(v_opp)
 
+    print('divide each vector by sqrt(x) and input them as a vector.')
+
+# The guy wire supporting a 100-foot tower has a tension of 500 pounds. Using the distances shown in the figure, write the component form of the vector F representing the tension in the wire. (Round your answers to three decimal places.)
+def q12():
+
+    pounds = 560
+
+    # the point is where the guy wire tower is located relative to the top of the tower.
+    # that means we put -100 instead of 100.
+    guy_wire = (75, -50, -100)
+
+    # magnitude of the guy wire
+    guy_wire_magnitude = (guy_wire[0]**2 + guy_wire[1]**2 + guy_wire[2]**2)
+    c_squared = (pounds**2 / guy_wire_magnitude)
+
+    # get c and round to 3 decimal places
+    c = round(c_squared**0.5, 3)
+
+    print('if the number is 123.1 then the number is 123.100')
+    print('don\'t use the i j k notation')
+    print(round(guy_wire[0]*c, 3), 'i ', round(guy_wire[1]*c, 3), 'j ', round(guy_wire[2]*c, 3), 'k')
 
 def test():
-    print(Fraction(1, 2))
+    pass
 
 if __name__ == "__main__":
-
-    # q1()
-    # q2()
-    # q3()
-    # q4()
-    # q5()
-    # q6()
-    # q7()
-    # q8()
-    # q9()
-    # q10()
-    q11()
-
-    # test()
+    q12()
