@@ -235,27 +235,30 @@ def q14():
     # the coefficients of the variables in the equation
     # x = 2t, y = t - 3, z = 2t + 2
 
-    Q = (8, -4, 1)
+    Q = (9, -8, 1)
+
     # based upon the coefficients of x, y, and z
     u = [2, 1, 2]
 
+
     x, y, z, t = sy.symbols('x y z t')
 
-    x = sy.Eq(2*t, x)
-    y = sy.Eq(t - 3, y)
-    z = sy.Eq(2*t + 2, z)
-
-    a = x.subs(t, 0)
-    b = y.subs(t, 0)
-    c = z.subs(t, 0)
-
-    P = [a, b, c]
-
-    print(P)
+    # lambda function to store into 3 points
+    f = lambda t: [2*t, t - 3, 2*t + 2]
+    P = f(0)
 
     PQ = [Q[0] - P[0], Q[1] - P[1], Q[2] - P[2]]
-    print(PQ)
 
+    PQ_x_u = np.cross(PQ, u)
+
+    # normalize PQ_x_u
+    PQ_x_u_norm = np.linalg.norm(PQ_x_u)
+
+    # normalize u
+    u_norm = np.linalg.norm(u)
+
+    # round to 3 decimal places of PQ_x_u_norm / u_norm
+    print(round(PQ_x_u_norm / u_norm, 3))
 
 
     
