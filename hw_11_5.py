@@ -231,6 +231,63 @@ def q12():
 
     print(str(numerator) + "/ sqrt(" + str(denominator) + ")")
 
+# Verify that the two planes are parallel.
+# if all else fails, use this: https://onlinemschool.com/math/assistance/cartesian_coordinate/plane_plane/
+def q13():
+
+    # if you get weird results then swap v and u, also check the next comment
+    v = [-1, 6, 2]
+    u = [-1/2, 3, 1]
+
+    # swap these numbers too.
+    w = [7, 8]
+    '''
+
+    u = [2, -3, 1]
+    v = [4, -6, 2]
+
+    w = [4, 3]
+    '''
+
+    print(u)
+    print(v)
+
+    # if they're all the same, then they're u and v are parallel
+    # make sure that n1 = C * n2
+    for i in range(len(u)):
+        print(u[i] / v[i], end=' ')
+    print()
+
+    # find the distance between the two planes
+
+    a = v[0]
+    b = v[1]
+    c = v[2]
+    d = -w[1]
+
+    print(a, b, c, d)
+    
+    x, y, z = sy.symbols('x y z')
+
+    eq = sy.Eq(u[0]*x + u[1]*y + u[2]*z + -w[0], 0)
+
+    # solve for x when y = 0 and z = 0
+    x_intercept = sy.solve(eq.subs(y, 0).subs(z, 0), x)[0]
+    y_intercept = 0
+    z_intercept = 0
+
+    print(x_intercept, y_intercept, z_intercept)
+
+    numerator = abs(a*x_intercept + b*y_intercept + c*z_intercept + d)
+    denominator = a**2 + b**2 + c**2
+
+    print(str(numerator) + "/ sqrt(" + str(denominator) + ")")
+
+
+    
+
+# Find the distance between the point and the line given by the set of parametric equations. (Round your answer to three decimal places.)
+# (9, -8, 1); x = 2t, y = t − 3, z = 2t + 2
 def q14():
     # the coefficients of the variables in the equation
     # x = 2t, y = t - 3, z = 2t + 2
@@ -269,4 +326,4 @@ def q15():
 
 
 if __name__ == "__main__":
-    q14()
+    q13()
